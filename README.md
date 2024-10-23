@@ -14,82 +14,58 @@
 8.	Stop the program. 
 # PROGRAM
 ```
-#include <stdio.h> 
-#include <ctype.h> 
-#include <string.h> 
-#include <stdlib.h>
-
+#include<stdio.h>
+#include<ctype.h>
+#include<string.h>
+#include<stdlib.h>
 #define MAX_EXPRESSION_SIZE 100
-
 int main() {
-    int i = 0, j = 0, x = 0, n, flag = 0; 
-    void *add[5];
-    char b[MAX_EXPRESSION_SIZE], d[15], c, srch;
-
-    // Input the expression terminated by '$'
+    int i = 0, j = 0, x = 0, n, flag = 0;
+    void *add[5]; // Array to store addresses
+    char b[MAX_EXPRESSION_SIZE], d[5], c, srch;
     printf("Enter the Expression terminated by $: ");
-    while((c = getchar()) != '$' && i < MAX_EXPRESSION_SIZE - 1) { 
+    while ((c = getchar()) != '$' && i < MAX_EXPRESSION_SIZE - 1) {
         b[i++] = c;
     }
-    b[i] = '\0'; // Null-terminate the string
-    n = i - 1;
-
-    // Display the given expression
+    b[i] = '\0'; 
+    n = i; 
     printf("Given Expression: %s\n", b);
-
-    // Symbol table heading
-    printf("\nSymbol Table\n"); 
+    printf("\nSymbol Table\n");
     printf("Symbol\taddr\ttype\n");
-
-    // Build symbol table
-    for(j = 0; j <= n; j++) { 
+    for (j = 0; j < n; j++) {
         c = b[j];
-        if (isalpha((unsigned char)c)) { // Check if the character is a letter
-            if (j == n) {
-                void *p = malloc(sizeof(char)); 
-                add[x] = p;
+        if (isalpha((unsigned char)c)) { 
+            if (j == n - 1 || !isalpha(b[j + 1])) { 
+                void *p = malloc(sizeof(char));
+                add[x] = p; 
                 d[x] = c; 
                 printf("%c\t%p\tidentifier\n", c, p);
-            } else {
-                char ch = b[j + 1];
-                if (ch == '+' || ch == '-' || ch == '*' || ch == '=') { 
-                    void *p = malloc(sizeof(char));
-                    add[x] = p;
-                    d[x] = c; 
-                    printf("%c\t%p\tidentifier\n", c, p); 
-                    x++;
-                }
+                x++;
             }
         }
     }
-
-    // Search for a symbol
-    printf("\nThe symbol to be searched: "); 
-    getchar(); // To consume the newline character left by the previous input
+    getchar();
+    printf("\nThe symbol to be searched: ");
     srch = getchar();
-    
-    for(i = 0; i <= x; i++) { 
+    for (i = 0; i < x; i++) {
         if (srch == d[i]) {
-            printf("Symbol Found\n"); 
-            printf("%c @ address %p\n", srch, add[i]); 
+            printf("Symbol Found\n");
+            printf("%c@address %p\n", srch, add[i]);
             flag = 1;
+            break;
         }
     }
-
-    if(flag == 0) {
+    if (flag == 0) {
         printf("Symbol Not Found\n");
     }
-
-    // Free dynamically allocated memory
-    for (i = 0; i <= x; i++) {
+    for (i = 0; i < x; i++) {
         free(add[i]);
     }
-
     return 0;
 }
 ```
 # OUTPUT
-![image](https://github.com/user-attachments/assets/f87986d3-a4b2-49f4-bf60-f4d26bab5604)
+![image](https://github.com/user-attachments/assets/1687cd64-b48b-42e9-a342-0c860ea57615)
 
 
 # RESULT
